@@ -1,16 +1,17 @@
 import { expect } from "chai";
 import { ContractReceipt } from "ethers";
 import { ethers } from "hardhat";
+import { BASE_HEROES, Class } from "../scripts/deploy";
 import { EpicGame } from "../typechain";
 
 describe("EpicGame", function () {
-  
+
   let game: EpicGame;
 
-  this.beforeAll(async() => {
+  this.beforeAll(async () => {
 
     const EpicGame = await ethers.getContractFactory("EpicGame");
-    game = await EpicGame.deploy();
+    game = await EpicGame.deploy(BASE_HEROES);
     await game.deployed();
 
   })
@@ -18,7 +19,7 @@ describe("EpicGame", function () {
 
 
 
-  it("Should created a hero with the correct name", async function () {
+  it("Should mint a hero with the correct name", async function () {
 
     const tx = await game.mintHero("turbopila", "ajsdklj");
 
@@ -34,18 +35,20 @@ describe("EpicGame", function () {
   });
 
 
-  it("Should failed the event when a wrong anem is expected", async function () {
+  it("Should create the base heroes with the proper name", async function () {
 
-    const tx = await game.mintHero("turbopila", "ajsdklj");
+    const barbarian = await game.baseHeroes(Class.Barbarian)
+    const healer = await game.baseHeroes(Class.Healer)
+    const mage = await game.baseHeroes(Class.Mage)
 
     // wait until the transaction is mined
     //let receipt: ContractReceipt = await tx.wait();
 
-    const contractReceipt: ContractReceipt = await tx.wait()
-    const event = contractReceipt.events?.find(event => event.event === 'CreatedHero')
-    const heroName: string = event?.args!['heroName']
 
-    expect(heroName).to.not.equal("turbopilasa")
+    expect(barbarian.name).to.be.equal("Barbarian")
+    expect(healer.name).to.be.equal("Healer")
+    expect(mage.name).to.be.equal("Mage")
+
 
   });
 
