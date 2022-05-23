@@ -20,12 +20,30 @@ contract EpicGame {
     }
 
     mapping(address => Hero) public heroes;
-    mapping(Class => Hero) public baseStats;
+    mapping(Class => Hero) public baseHeroes;
 
     event CreatedHero(address from, string heroName);
 
-    constructor() {
-        console.log("DEPLOY DEPLOY>>>>>>>");
+    constructor(
+            Hero[] memory bases
+    ) {
+
+        for(uint i = 0; i < bases.length; i++ ){
+            Hero memory baseHero;
+            baseHero.name = bases[i].name;
+            baseHero.hp = bases[i].hp;
+            baseHero.maxHp = bases[i].hp;
+            baseHero.attackDamage = bases[i].attackDamage;
+            baseHero.imageURI = bases[i].imageURI;
+            baseHero.heroIndex = Class(i);
+
+            baseHeroes[Class(i)] = baseHero;
+        }
+
+
+        console.log("Mage attack %s",baseHeroes[Class.Mage].attackDamage);
+        console.log("Healer attack %s",baseHeroes[Class.Healer].attackDamage);
+        console.log("Barbarian attack %s",baseHeroes[Class.Barbarian].attackDamage);
     }
 
     function mintHero(string memory _name, string memory _imageURI)
