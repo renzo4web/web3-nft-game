@@ -27,7 +27,6 @@ contract EpicGame {
     constructor(
             Hero[] memory bases
     ) {
-        console.log("DEPLOY DEPLOY>>>>>>>");
 
         for(uint i = 0; i < bases.length; i++ ){
             Hero memory baseHero;
@@ -42,9 +41,9 @@ contract EpicGame {
         }
 
 
-        console.log("Mage %s",baseHeroes[Class.Mage].name);
-        console.log("Healer %s",baseHeroes[Class.Healer].name);
-        console.log("Barbarian %s",baseHeroes[Class.Barbarian].name);
+        console.log("Mage attack %s",baseHeroes[Class.Mage].attackDamage);
+        console.log("Healer attack %s",baseHeroes[Class.Healer].attackDamage);
+        console.log("Barbarian attack %s",baseHeroes[Class.Barbarian].attackDamage);
     }
 
     function mintHero(string memory _name, string memory _imageURI)

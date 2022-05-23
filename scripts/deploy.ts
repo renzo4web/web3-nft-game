@@ -3,9 +3,8 @@ import { ethers } from "hardhat";
 export enum Class {
   Mage,
   Healer,
-  Barbarian
+  Barbarian,
 }
-
 
 export const BASE_HEROES = [
   {
@@ -31,16 +30,12 @@ export const BASE_HEROES = [
     attackDamage: 50,
     name: "Barbarian",
     imageURI: "hhettppf",
-  }
-]
-
-
+  },
+];
 
 async function main() {
   const EpicGame = await ethers.getContractFactory("EpicGame");
-  const game = await EpicGame.deploy(
-    BASE_HEROES
-  );
+  const game = await EpicGame.deploy(BASE_HEROES);
 
   await game.deployed();
 
