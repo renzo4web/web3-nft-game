@@ -39,6 +39,17 @@ async function main() {
 
   await game.deployed();
 
+  let txn;
+  // We only have three characters.
+  // an NFT w/ the character at index 2 of our array.
+  txn = await game.mintHero(Class.Barbarian, "eeeeel", "http:2//", {
+    value: ethers.utils.parseEther("0.1"),
+  });
+  await txn.wait();
+
+  const returnedTokenUri = await game.tokenURI(1);
+  console.log("Token URI:", returnedTokenUri);
+
   console.log("Greeter deployed to:", game.address);
 }
 
