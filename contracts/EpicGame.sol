@@ -8,7 +8,7 @@ import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-abstract  contract  EpicGame is ERC721A {
+contract EpicGame is ERC721A {
     enum Class {
         Mage,
         Healer,
@@ -24,12 +24,17 @@ abstract  contract  EpicGame is ERC721A {
         string imageURI;
     }
 
-    mapping(address => Hero) public heroes;
+    using Counters for Counters.Counter;
     mapping(Class => Hero) public baseHeroes;
+    // who own a nft. address => tokenId
+    mapping(address => uint256) public nftHolders;
+    // tokenId => attributes
+    mapping(uint256 => Hero) public heroesHolderAttr;
+    Counters.Counter private _tokenIds;
 
-    event CreatedHero(address from, string heroName);
+    event CreatedHero(address from, string heroName, uint nftNumber);
 
-    constructor(Hero[] memory bases) {
+    constructor(Hero[] memory bases) ERC721A("Heroes", "HRG") {
         for (uint256 i = 0; i < bases.length; i++) {
             Hero memory baseHero;
             baseHero.name = bases[i].name;
@@ -41,6 +46,9 @@ abstract  contract  EpicGame is ERC721A {
 
             baseHeroes[Class(i)] = baseHero;
         }
+
+        // Start the minting with 1
+        _tokenIds.increment();
 
         console.log("Mage attack %s", baseHeroes[Class.Mage].attackDamage);
         console.log("Healer attack %s", baseHeroes[Class.Healer].attackDamage);
@@ -55,6 +63,10 @@ abstract  contract  EpicGame is ERC721A {
         string memory _name,
         string memory _imageURI
     ) public payable {
+        uint256 currentItemId = _tokenIds.current();
+
+        _safeMint(msg.sender, currentItemId);
+
         Hero memory newHero = Hero({
             heroIndex: choice,
             maxHp: 200,
@@ -64,8 +76,12 @@ abstract  contract  EpicGame is ERC721A {
             imageURI: _imageURI
         });
 
-        heroes[msg.sender] = newHero;
+        nftHolders[msg.sender] = currentItemId;
 
-        emit CreatedHero(msg.sender, newHero.name);
+
+        emit CreatedHero(msg.sender, newHero.name, currentItemId);
+
+        // increment for next mint
+        _tokenIds.increment();
     }
 }

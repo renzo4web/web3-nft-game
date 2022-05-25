@@ -16,12 +16,9 @@ describe("EpicGame", function () {
 
   })
 
-
-
-
   it("Should mint a hero with the correct name", async function () {
 
-    const tx = await game.mintHero("turbopila", "ajsdklj");
+    const tx = await game.mintHero(Class.Barbarian, "turbopila", "ajsdklj");
 
     // wait until the transaction is mined
     //let receipt: ContractReceipt = await tx.wait();
@@ -29,9 +26,11 @@ describe("EpicGame", function () {
     const contractReceipt: ContractReceipt = await tx.wait()
     const event = contractReceipt.events?.find(event => event.event === 'CreatedHero')
     const heroName: string = event?.args!['heroName']
+    const nftTokenNumber: string = event?.args!['nftNumber']
+
 
     expect(heroName).to.equal("turbopila")
-
+    expect(nftTokenNumber).to.be.equal(1)
   });
 
 
@@ -48,11 +47,6 @@ describe("EpicGame", function () {
     expect(barbarian.name).to.be.equal("Barbarian")
     expect(healer.name).to.be.equal("Healer")
     expect(mage.name).to.be.equal("Mage")
-
-
   });
-
-
-
 
 });
