@@ -1,5 +1,9 @@
 # Advanced Sample Hardhat Project
 
+
+[![hardhat-mocha CI](https://github.com/renzo4web/Grande-Jogo/actions/workflows/main.yml/badge.svg)](https://github.com/renzo4web/Grande-Jogo/actions/workflows/main.yml)
+
+
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
 
 The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
