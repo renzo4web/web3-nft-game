@@ -33,9 +33,16 @@ export const BASE_HEROES = [
   },
 ];
 
+export const BOSS_ATTR = {
+  hp: 10000,
+  maxHp: 10000,
+  attackDamage: 150,
+  name: "The Boss",
+};
+
 async function main() {
   const EpicGame = await ethers.getContractFactory("EpicGame");
-  const game = await EpicGame.deploy(BASE_HEROES);
+  const game = await EpicGame.deploy(BASE_HEROES, BOSS_ATTR);
 
   await game.deployed();
 

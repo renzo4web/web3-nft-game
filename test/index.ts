@@ -2,7 +2,7 @@
 import { expect } from "chai";
 import { ContractReceipt } from "ethers";
 import { ethers } from "hardhat";
-import { BASE_HEROES, Class } from "../scripts/deploy";
+import { BASE_HEROES, BOSS_ATTR, Class } from "../scripts/deploy";
 import { EpicGame } from "../typechain";
 
 describe("EpicGame", function () {
@@ -10,7 +10,7 @@ describe("EpicGame", function () {
 
   this.beforeAll(async () => {
     const EpicGame = await ethers.getContractFactory("EpicGame");
-    game = await EpicGame.deploy(BASE_HEROES);
+    game = await EpicGame.deploy(BASE_HEROES, BOSS_ATTR);
     await game.deployed();
   });
 
@@ -42,16 +42,20 @@ describe("EpicGame", function () {
     await expect(tx).to.be.reverted;
   });
 
-  it("Should create the base heroes with the proper name", async function () {
+  it("Should create the base heroes and boss with the proper name", async function () {
     const barbarian = await game.baseHeroes(Class.Barbarian);
     const healer = await game.baseHeroes(Class.Healer);
     const mage = await game.baseHeroes(Class.Mage);
 
     // wait until the transaction is mined
     // let receipt: ContractReceipt = await tx.wait();
+    const boss = await game.boss();
+
+    const bossAttack = boss["attackDamage"];
 
     expect(barbarian.name).to.be.equal("Barbarian");
     expect(healer.name).to.be.equal("Healer");
     expect(mage.name).to.be.equal("Mage");
+    expect(bossAttack).to.be.equal(BOSS_ATTR.attackDamage);
   });
 });

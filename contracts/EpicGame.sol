@@ -25,6 +25,15 @@ contract EpicGame is ERC721A {
         string imageURI;
     }
 
+    struct Boss {
+        uint256 hp;
+        uint256 maxHp;
+        uint256 attackDamage;
+        string name;
+    }
+
+    Boss public boss;
+
     using Counters for Counters.Counter;
     mapping(Class => Hero) public baseHeroes;
     // who own a nft. address => tokenId
@@ -34,9 +43,10 @@ contract EpicGame is ERC721A {
     mapping(Class => string) public classes;
     Counters.Counter private _tokenIds;
 
+
     event CreatedHero(address from, string heroName, uint256 nftNumber);
 
-    constructor(Hero[] memory bases) ERC721A("Heroes", "HRG") {
+    constructor(Hero[] memory bases, Boss memory bossAttr) ERC721A("Heroes", "HRG") {
         for (uint256 i = 0; i < bases.length; i++) {
             Hero memory baseHero;
             baseHero.name = bases[i].name;
@@ -48,6 +58,13 @@ contract EpicGame is ERC721A {
 
             baseHeroes[Class(i)] = baseHero;
         }
+            
+        boss =  Boss({
+         hp: bossAttr.hp,
+         maxHp : bossAttr.maxHp,
+         attackDamage : bossAttr.attackDamage,
+         name : bossAttr.name
+        });
 
         classes[Class.Mage] = "Mage";
         classes[Class.Healer] = "Healer";
@@ -55,13 +72,6 @@ contract EpicGame is ERC721A {
 
         // Start the minting with 1
         _tokenIds.increment();
-
-        console.log("Mage attack %s", baseHeroes[Class.Mage].attackDamage);
-        console.log("Healer attack %s", baseHeroes[Class.Healer].attackDamage);
-        console.log(
-            "Barbarian attack %s",
-            baseHeroes[Class.Barbarian].attackDamage
-        );
     }
 
     function mintHero(
@@ -131,5 +141,9 @@ contract EpicGame is ERC721A {
         );
 
         return output;
+    }
+
+    function attackBoss () public view {
+
     }
 }
