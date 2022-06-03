@@ -43,10 +43,12 @@ contract EpicGame is ERC721A {
     mapping(Class => string) public classes;
     Counters.Counter private _tokenIds;
 
-
     event CreatedHero(address from, string heroName, uint256 nftNumber);
+    event HitBoss(uint256 tokenId, uint256 bossHp, uint256 heroeHp);
 
-    constructor(Hero[] memory bases, Boss memory bossAttr) ERC721A("Heroes", "HRG") {
+    constructor(Hero[] memory bases, Boss memory bossAttr)
+        ERC721A("Heroes", "HRG")
+    {
         for (uint256 i = 0; i < bases.length; i++) {
             Hero memory baseHero;
             baseHero.name = bases[i].name;
@@ -58,12 +60,12 @@ contract EpicGame is ERC721A {
 
             baseHeroes[Class(i)] = baseHero;
         }
-            
-        boss =  Boss({
-         hp: bossAttr.hp,
-         maxHp : bossAttr.maxHp,
-         attackDamage : bossAttr.attackDamage,
-         name : bossAttr.name
+
+        boss = Boss({
+            hp: bossAttr.hp,
+            maxHp: bossAttr.maxHp,
+            attackDamage: bossAttr.attackDamage,
+            name: bossAttr.name
         });
 
         classes[Class.Mage] = "Mage";
@@ -85,11 +87,13 @@ contract EpicGame is ERC721A {
 
         _safeMint(msg.sender, currentItemId);
 
+        Hero memory templateHeroe = baseHeroes[choice];
+
         Hero memory newHero = Hero({
             heroIndex: choice,
-            maxHp: 200,
-            hp: 200,
-            attackDamage: 50,
+            maxHp: templateHeroe.maxHp,
+            hp: templateHeroe.hp,
+            attackDamage: templateHeroe.attackDamage,
             name: _name,
             imageURI: _imageURI
         });
@@ -143,7 +147,28 @@ contract EpicGame is ERC721A {
         return output;
     }
 
-    function attackBoss () public view {
+    function attackBoss(uint256 _tokenId) public payable isBossAlive {
+        require(
+            _exists(_tokenId) && ownerOf(_tokenId) == msg.sender,
+            "Invalid"
+        );
 
+        Hero storage heroe = heroesHolderAttr[_tokenId];
+
+        require(heroe.hp > 0, "Heroe died");
+
+        boss.hp = boss.hp < heroe.attackDamage
+            ? 0
+            : boss.hp - heroe.attackDamage;
+        heroe.hp = heroe.hp < boss.attackDamage
+            ? 0
+            : heroe.hp - boss.attackDamage;
+
+        emit HitBoss(_tokenId, boss.hp, heroe.hp);
+    }
+
+    modifier isBossAlive() {
+        require(boss.hp > 0, "The Game Boss is dead!!!");
+        _;
     }
 }

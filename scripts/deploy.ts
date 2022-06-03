@@ -46,6 +46,7 @@ async function main() {
 
   await game.deployed();
 
+  /*
   let txn;
   // We only have three characters.
   // an NFT w/ the character at index 2 of our array.
@@ -56,6 +57,7 @@ async function main() {
 
   const returnedTokenUri = await game.tokenURI(1);
   console.log("Token URI:", returnedTokenUri);
+  */
 
   console.log("Greeter deployed to:", game.address);
 }
