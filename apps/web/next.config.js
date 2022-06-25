@@ -7,6 +7,7 @@ module.exports = withTM({
     domains: [
       "cdn2.iconfinder.com",
       "cdn0.iconfinder.com",
+      "assets.reedpopcdn.com",
       "static.thenounproject.com",
     ],
   },

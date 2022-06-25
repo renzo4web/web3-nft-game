@@ -119,6 +119,7 @@ contract EpicGame is ERC721A {
         string memory strMaxHp = Strings.toString(heroAttr.maxHp);
         string memory strAttackDamage = Strings.toString(heroAttr.attackDamage);
         string memory heroClass = classes[heroAttr.heroIndex];
+        string memory heroeImage = heroAttr.imageURI;
 
         string memory json = Base64.encode(
             abi.encodePacked(
@@ -127,7 +128,7 @@ contract EpicGame is ERC721A {
                 " -- NFT #: ",
                 Strings.toString(_tokenId),
                 '", "description": "Grande Jogo first NFT game that is fun", "image": "',
-                heroAttr.imageURI,
+                heroeImage,
                 '", "Class" : "',
                 heroClass,
                 '", "attributes": [ { "trait_type": "Health Points", "value": ',

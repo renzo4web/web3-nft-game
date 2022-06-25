@@ -94,6 +94,7 @@ importers:
       postcss: ^8.4.5
       react: 17.0.2
       react-dom: 17.0.2
+      react-toastify: ^9.0.5
       tailwindcss: ^3.0.5
       tsconfig: workspace:*
       typescript: ^4.5.3
@@ -105,6 +106,7 @@ importers:
       next: 12.0.7_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+      react-toastify: 9.0.5_sfoxds7t5ydpegc3knd667wn6m
       ui: link:../../packages/ui
       wagmi: 0.1.7_ethers@5.5.3+react@17.0.2
     devDependencies:
@@ -7108,6 +7110,17 @@ packages:
   /react-refresh/0.8.3:
     resolution: {integrity: sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /react-toastify/9.0.5_sfoxds7t5ydpegc3knd667wn6m:
+    resolution: {integrity: sha512-dszPCeQINY+Nm6HmsiAXT/7wsazPqv0S/RuhIYLAW+fTKcd3T1iRjZG0XqrN9nvAzqaE5J6uxMaiBrOevxjY8g==}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      clsx: 1.1.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /react/17.0.2:
