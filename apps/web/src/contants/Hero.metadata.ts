@@ -21,3 +21,8 @@ export const HEROES_METADATA = [
     colorBadge: "whatsapp",
   },
 ];
+
+export const BOSS_METADATA = {
+  imageUrl:
+    "https://assets.reedpopcdn.com/doom-eternal-marauder-beat-fast-7021-1585323777581.jpg/BROK/thumbnail/1200x900/quality/100/doom-eternal-marauder-beat-fast-7021-1585323777581.jpg",
+};

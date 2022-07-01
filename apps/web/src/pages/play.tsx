@@ -12,10 +12,12 @@ import { Storage, EpicGame__factory } from "@/typechain";
 import { ethers } from "ethers";
 import Image from "next/image";
 import * as React from "react";
-import { HEROES_METADATA } from "../contants/Hero.metadata";
+import { BOSS_METADATA, HEROES_METADATA } from "../contants/Hero.metadata";
 import { TokenURI } from "../../type";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { percentage } from "../helper";
+import NFTCard from "../components/NTFCard";
 
 const hasEthereum =
   typeof window !== "undefined" && typeof window.ethereum !== "undefined";
@@ -100,6 +102,12 @@ export default function Play() {
     effect();
   }, [account?.address, contract, router, loading]);
 
+  React.useEffect(() => {
+    if (!!tokenURI && !account?.address) {
+      router.push("/");
+    }
+  }, [tokenURI, account?.address, router]);
+
   async function handleAttack() {
     console.log(tokenId);
 
@@ -124,67 +132,40 @@ export default function Play() {
     }
   }
 
+  console.log("TO", tokenURI);
+  console.log("BOSS", bossGame);
+
   return (
-    <div className="max-w-lg mt-36 mx-auto text-center px-4">
+    <div className="max-w-2xl mt-36 mx-auto text-center px-4">
       <Head>
         <title>Play</title>
       </Head>
 
-      <main className="space-y-8">
-        <>
-          <h1 className="text-4xl font-semibold mb-8">Arena</h1>
+      {/*<main className="space-y-8 max-w-md">*/}
+      <h1 className="text-4xl font-semibold mb-8">Arena</h1>
 
-          <div className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
-            <Image
-              src={
-                "https://assets.reedpopcdn.com/doom-eternal-marauder-beat-fast-7021-1585323777581.jpg/BROK/thumbnail/1200x900/quality/100/doom-eternal-marauder-beat-fast-7021-1585323777581.jpg"
-              }
-              alt="Game Boss"
-              width="500"
-              height="300"
-            />
-            <div className="p-5">
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                {bossGame?.name}
-              </h5>
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Attack Damage: {bossGame?.attackDamage}
-              </h5>
+      <div className="flex space-x-9">
+        {!!tokenURI && <NFTCard {...tokenURI} />}
 
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                HP: {bossGame?.hp} / {bossGame?.maxHp}
-              </h5>
-            </div>
-            <button
-              onClick={handleAttack}
-              type="button"
-              className="text-blue-700 w-full hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800"
-            >
-              Attack
-            </button>
-          </div>
+        <Button
+          onClick={handleAttack}
+          className="text-5xl h-20 my-auto bg-white text-center border-2 border-black-500 rounded-full disabled:bg-grey-400  hover:bg-white disabled:cursor-not-allowed border border-slate-300 hover:border-red-300 align-middle"
+          type="submit"
+          aria-label="Attack"
+          disabled={!account?.address}
+        >
+          ⚔️
+        </Button>
 
-          {!!tokenURI && (
-            <>
-              <h2 className="text-4xl font-semibold mb-8">{tokenURI?.name}</h2>
-              <h2 className="text-4xl font-semibold mb-8">{tokenURI?.Class}</h2>
-              {tokenURI.attributes.map(({ trait_type, value, max_value }) => (
-                <div key={trait_type}>
-                  <p>{trait_type}</p>
-                  <p>Current: {value}</p>
-                  {!!max_value && <p>Max: {max_value}</p>}
-                </div>
-              ))}
-            </>
-          )}
+        {!!bossGame && (
+          <NFTCard {...bossGame} isBoss={true} image={BOSS_METADATA.imageUrl} />
+        )}
+      </div>
 
-          <div className="space-y-8">
-            <div className="flex flex-col space-y-4">
-              <WalletConnectModal />
-            </div>
-          </div>
-        </>
-      </main>
+      <div className="space-y-8 mt-14">
+        <WalletConnectModal />
+      </div>
+      {/*</main>*/}
     </div>
   );
 }

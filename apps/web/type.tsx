@@ -7,7 +7,7 @@ export interface TokenURI {
 }
 
 export interface Attribute {
-  trait_type: string;
+  trait_type: "Health Points" | "Attack Damage";
   value: number;
   max_value?: number;
 }
