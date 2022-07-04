@@ -17,6 +17,7 @@ export default function NFTCard({
   hp,
   attackDamage,
   maxHp,
+  ...rest
 }: Props) {
   const currentHealth = isBoss
     ? percentage(Number(hp), Number(maxHp))
@@ -34,7 +35,7 @@ export default function NFTCard({
     <section className="w-50 mx-auto bg-[#20354b] rounded-2xl px-8 py-6 shadow-lg">
       <div className="flex items-center justify-between">
         <span className="text-gray-400 text-sm">
-          {isBoss ? "Boss" : "Hero"}
+          {isBoss ? "Boss" : `Hero ${rest["NFT#"]}`}
         </span>
         <span className="text-emerald-400">
           <svg

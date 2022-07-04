@@ -47,7 +47,7 @@ const config: HardhatUserConfig = {
     },
     rinkeby: {
       url: node_url("rinkeby"),
-      accounts: accounts("rinkeby"),
+      accounts: [process.env.PRIVATE_RINKEBY_ACCOUNT_KEY || ""],
     },
     kovan: {
       url: node_url("kovan"),

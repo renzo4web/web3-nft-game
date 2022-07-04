@@ -4,24 +4,23 @@ import {
   useContractWrite,
   useAccount,
   useContractEvent,
-  useContractRead,
   useContract,
   useSigner,
 } from "wagmi";
 import { Storage, EpicGame__factory } from "@/typechain";
 import { ethers } from "ethers";
-import Image from "next/image";
 import * as React from "react";
-import { BOSS_METADATA, HEROES_METADATA } from "../contants/Hero.metadata";
+import { BOSS_METADATA } from "../contants/Hero.metadata";
 import { TokenURI } from "../../type";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import { percentage } from "../helper";
 import NFTCard from "../components/NTFCard";
 
 const hasEthereum =
   typeof window !== "undefined" && typeof window.ethereum !== "undefined";
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+//const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+
+const contractAddress = "0x8Ee56Ce44140246392efc85a9B6A842ad6a98Fdb";
 
 export default function Play() {
   const router = useRouter();
@@ -117,6 +116,7 @@ export default function Play() {
           args: Number(tokenId),
           overrides: {
             value: ethers.utils.parseEther("0.003"),
+            gasPrice: 8000000000,
           },
         });
         if (tx.data) {

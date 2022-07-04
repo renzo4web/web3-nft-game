@@ -18,7 +18,9 @@ import { toast } from "react-toastify";
 
 const hasEthereum =
   typeof window !== "undefined" && typeof window.ethereum !== "undefined";
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+
+//const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const contractAddress = "0x8Ee56Ce44140246392efc85a9B6A842ad6a98Fdb";
 
 export default function Web() {
   const router = useRouter();

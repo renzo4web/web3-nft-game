@@ -6,7 +6,7 @@ import { providers } from "ethers";
 // Get environment variables
 
 // Pick chains
-const chains = [chain.localhost];
+const chains = [chain.rinkeby];
 
 const connectors = [
   new InjectedConnector({ chains }),

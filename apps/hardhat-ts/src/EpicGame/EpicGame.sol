@@ -125,7 +125,7 @@ contract EpicGame is ERC721A {
             abi.encodePacked(
                 '{"name": "',
                 heroAttr.name,
-                " -- NFT #: ",
+                '", "NFT#": "',
                 Strings.toString(_tokenId),
                 '", "description": "Grande Jogo first NFT game that is fun", "image": "',
                 heroeImage,
