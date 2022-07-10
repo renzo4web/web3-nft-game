@@ -149,6 +149,7 @@ contract EpicGame is ERC721A {
     }
 
     function attackBoss(uint256 _tokenId) public payable  isBossAlive {
+        require( ownerOf(_tokenId) == msg.sender, "No possession of the NFT");
 
         Hero storage heroe = heroesHolderAttr[_tokenId];
 

@@ -26,7 +26,6 @@ export default function Web() {
   const router = useRouter();
   const [heroName, setHeroName] = React.useState("");
   const account = useAccount();
-  const [payload, setPayload] = React.useState<null | any[]>(null);
 
   const contract = useContract({
     addressOrName: contractAddress,
@@ -41,7 +40,6 @@ export default function Web() {
     overrides: {
       value: ethers.utils.parseEther("0.003"),
     },
-    args: payload,
     onSuccess() {
       toast.success("Heroe Minted!", {
         position: toast.POSITION.TOP_CENTER,
@@ -115,8 +113,9 @@ export default function Web() {
                     </h5>
                     <button
                       onClick={async () => {
-                        setPayload([i, heroName, imageURI]);
-                        write();
+                        write({
+                          args: [i, heroName, imageURI],
+                        });
                       }}
                       className="disabled:bg-blue-400 w-full  disabled:cursor-not-allowed"
                       type="submit"
