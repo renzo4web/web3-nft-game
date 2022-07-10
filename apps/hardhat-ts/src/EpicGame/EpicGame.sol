@@ -148,11 +148,7 @@ contract EpicGame is ERC721A {
         return output;
     }
 
-    function attackBoss(uint256 _tokenId) public payable isBossAlive {
-        require(
-            _exists(_tokenId) && ownerOf(_tokenId) == msg.sender,
-            "Invalid"
-        );
+    function attackBoss(uint256 _tokenId) public payable  isBossAlive {
 
         Hero storage heroe = heroesHolderAttr[_tokenId];
 
