@@ -3,13 +3,12 @@ pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 
-import "erc721a/contracts/ERC721A.sol";
-
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 
-contract EpicGame is ERC721A {
+contract EpicGame is ERC721 {
     enum Class {
         Mage,
         Healer,
@@ -47,7 +46,7 @@ contract EpicGame is ERC721A {
     event HitBoss(uint256 tokenId, uint256 bossHp, uint256 heroeHp);
 
     constructor(Hero[] memory bases, Boss memory bossAttr)
-        ERC721A("Heroes", "HRG")
+        ERC721("Heroes", "HRG")
     {
         for (uint256 i = 0; i < bases.length; i++) {
             Hero memory baseHero;
@@ -125,7 +124,7 @@ contract EpicGame is ERC721A {
             abi.encodePacked(
                 '{"name": "',
                 heroAttr.name,
-                " -- NFT #: ",
+                '", "NFT#": "',
                 Strings.toString(_tokenId),
                 '", "description": "Grande Jogo first NFT game that is fun", "image": "',
                 heroeImage,
@@ -148,11 +147,8 @@ contract EpicGame is ERC721A {
         return output;
     }
 
-    function attackBoss(uint256 _tokenId) public payable isBossAlive {
-        require(
-            _exists(_tokenId) && ownerOf(_tokenId) == msg.sender,
-            "Invalid"
-        );
+    function attackBoss(uint256 _tokenId) public payable  isBossAlive {
+        require( nftHolders[msg.sender] == _tokenId, "No possession of the NFT");
 
         Hero storage heroe = heroesHolderAttr[_tokenId];
 

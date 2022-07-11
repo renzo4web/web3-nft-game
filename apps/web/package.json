@@ -11,19 +11,21 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.4.3",
+    "@rainbow-me/rainbowkit": "^0.4.2",
     "ethers": "^5.5.3",
     "next": "12.0.7",
+    "rainbowkit": "link:@types/@rainbow-me/rainbowkit",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-toastify": "^9.0.5",
-    "ui": "workspace:*",
-    "wagmi": "^0.1.7"
+    "wagmi": "^0.5.9"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.5.0",
     "@ethersproject/providers": "^5.5.2",
     "@types/react": "17.0.37",
     "autoprefixer": "^10.4.0",
+    "babel-plugin-styled-components": "^2.0.7",
     "config": "workspace:*",
     "eslint": "7.32.0",
     "next-transpile-modules": "9.0.0",
