@@ -4,6 +4,7 @@ import "hardhat-deploy";
 import "@nomiclabs/hardhat-ethers";
 import "hardhat-gas-reporter";
 import "@typechain/hardhat";
+import "@nomiclabs/hardhat-etherscan";
 import "solidity-coverage";
 import { node_url, accounts, addForkConfiguration } from "./utils/network";
 
@@ -75,6 +76,9 @@ const config: HardhatUserConfig = {
   },
   mocha: {
     timeout: 0,
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY,
   },
   external: process.env.HARDHAT_FORK
     ? {

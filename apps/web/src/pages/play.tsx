@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
-//const contractAddress = "0x8Ee56Ce44140246392efc85a9B6A842ad6a98Fdb";
+//const contractAddress = "0xB57e8771F56792f27335916454eCed62B8a62060";
 
 export default function Play() {
   const router = useRouter();
@@ -56,7 +56,7 @@ export default function Play() {
     functionName: "attackBoss",
     addressOrName: contractAddress,
     contractInterface: EpicGame__factory.abi,
-    args: [Number(nftHolders.toString())],
+    args: [Number(nftHolders?.toString())],
     onSuccess() {
       toast.success("Heroe Minted!", {
         position: toast.POSITION.TOP_CENTER,
@@ -140,7 +140,7 @@ export default function Play() {
 
   console.log("eeeee", JSON.stringify(nftHolders?.toString()));
 
-  console.log("token", JSON.stringify(token.toString()));
+  console.log("token", JSON.stringify(token?.toString()));
 
   return (
     <div className="max-w-2xl mt-36 mx-auto text-center px-4">
@@ -156,7 +156,11 @@ export default function Play() {
         {!!tokenURI && <NFTCard {...tokenURI} />}
 
         <button
-          onClick={() => attackBoss()}
+          onClick={() =>
+            attackBoss({
+              args: [Number(nftHolders?.toString())],
+            })
+          }
           className="text-5xl h-20 my-auto bg-white text-center border-2 border-black-500 rounded-full disabled:bg-grey-400  hover:bg-white disabled:cursor-not-allowed border border-slate-300 hover:border-red-300 align-middle"
           type="submit"
           aria-label="Attack"

@@ -20,7 +20,7 @@ const hasEthereum =
   typeof window !== "undefined" && typeof window.ethereum !== "undefined";
 
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-//const contractAddress = "0x8Ee56Ce44140246392efc85a9B6A842ad6a98Fdb";
+//const contractAddress = "0xB57e8771F56792f27335916454eCed62B8a62060";
 
 export default function Web() {
   const router = useRouter();
@@ -37,9 +37,6 @@ export default function Web() {
     addressOrName: contractAddress,
     contractInterface: EpicGame__factory.abi,
     functionName: "mintHero",
-    overrides: {
-      value: ethers.utils.parseEther("0.003"),
-    },
     onSuccess() {
       toast.success("Heroe Minted!", {
         position: toast.POSITION.TOP_CENTER,
@@ -115,6 +112,9 @@ export default function Web() {
                       onClick={async () => {
                         write({
                           args: [i, heroName, imageURI],
+                          overrides: {
+                            value: ethers.utils.parseEther("0.003"),
+                          },
                         });
                       }}
                       className="disabled:bg-blue-400 w-full  disabled:cursor-not-allowed"
@@ -128,10 +128,6 @@ export default function Web() {
                   </div>
                 </div>
               ))}
-            </div>
-
-            <div className="space-y-8">
-              <div className="flex flex-col space-y-4"></div>
             </div>
           </>
         </main>
