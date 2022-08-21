@@ -1,6 +1,11 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Head from "next/head";
-import { useContractWrite, useAccount, useContractRead } from "wagmi";
+import {
+  useContractWrite,
+  useAccount,
+  useContractRead,
+  useProvider,
+} from "wagmi";
 import { EpicGame__factory } from "@/typechain";
 import * as React from "react";
 import { BOSS_METADATA } from "../contants/Hero.metadata";
@@ -8,6 +13,7 @@ import { TokenURI } from "../../type";
 import { useRouter } from "next/router";
 import NFTCard from "../components/NTFCard";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
@@ -16,16 +22,48 @@ const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 export default function Play() {
   const router = useRouter();
   const [bossGame, setBossGame] = React.useState(null);
+  const [hitBossEventList, setHitBossEventList] = useState([]);
   const account = useAccount();
+  const provider = useProvider();
   const [tokenURI, setTokenURI] = React.useState<null | TokenURI>(null);
+
+  useEffect(() => {
+    const Contract = EpicGame__factory.connect(contractAddress, provider);
+    (async () => {
+      const hitBossFilter = Contract.filters.HitBoss();
+
+      const logs = await Contract.queryFilter(hitBossFilter);
+
+      setHitBossEventList(
+        logs?.map?.((e) => ({
+          nft: e.args.tokenId?.toString?.(),
+          bossHp: e.args.bossHp?.toString?.(),
+          heroeHp: e.args.heroeHp?.toString?.(),
+        }))
+      );
+      console.log(
+        logs?.map?.((e) => ({
+          nft: e.args.tokenId?.toString?.(),
+          bossHp: e.args.bossHp?.toString?.(),
+          heroeHp: e.args.heroeHp?.toString?.(),
+          // TODO : add time
+        }))
+      );
+    })();
+
+    return () => {
+      Contract.removeAllListeners();
+    };
+  }, []);
 
   const { data: bossData } = useContractRead({
     addressOrName: contractAddress,
     contractInterface: EpicGame__factory.abi,
     functionName: "boss",
+    watch: true,
   });
 
-  const { data: nftHolders } = useContractRead({
+  const { data: nftHolders, isLoading: loadingNftHolders } = useContractRead({
     addressOrName: contractAddress,
     contractInterface: EpicGame__factory.abi,
     functionName: "nftHolders",
@@ -33,7 +71,7 @@ export default function Play() {
     enabled: !!account?.address,
   });
 
-  const { data: token } = useContractRead({
+  const { data: token, isLoading: loadingToken } = useContractRead({
     addressOrName: contractAddress,
     contractInterface: EpicGame__factory.abi,
     functionName: "tokenURI",
@@ -46,7 +84,7 @@ export default function Play() {
     functionName: "attackBoss",
     addressOrName: contractAddress,
     contractInterface: EpicGame__factory.abi,
-    args: [Number(nftHolders?.toString())],
+    args: [Number(nftHolders?.toString?.())],
     onSuccess() {
       toast.success("Boss Attacked!", {
         position: toast.POSITION.TOP_CENTER,
@@ -63,7 +101,8 @@ export default function Play() {
   React.useEffect(() => {
     const effect = async () => {
       try {
-        fetch(token.toString())
+        if (loadingAttack) return;
+        fetch(token?.toString?.())
           .then((res) => res.json())
           .then(setTokenURI);
       } catch (error) {
@@ -72,7 +111,7 @@ export default function Play() {
     };
 
     effect();
-  }, [token, loadingAttack]);
+  }, [token, loadingAttack, loadingNftHolders, loadingToken]);
 
   React.useEffect(() => {
     if (!bossData) {
@@ -127,7 +166,17 @@ export default function Play() {
           <NFTCard {...bossGame} isBoss={true} image={BOSS_METADATA.imageUrl} />
         )}
       </div>
-      <div className="space-y-8 mt-14"></div>
+      <div className="space-y-8 mt-14">
+        {!!hitBossEventList?.length
+          ? hitBossEventList.map((e) => (
+              <div key={String(e.nft + 1)}>
+                <p>#NFT: {e?.nft}</p>
+                <p>Boss HP: {e?.bossHp}</p>
+                <p>Heroe HP: {e?.heroeHp}</p>
+              </div>
+            ))
+          : "Not events"}
+      </div>
     </div>
   );
 }
