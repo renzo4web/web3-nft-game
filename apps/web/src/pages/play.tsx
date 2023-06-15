@@ -1,6 +1,11 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Head from "next/head";
-import { useContractWrite, useAccount, useContractRead } from "wagmi";
+import {
+  useContractWrite,
+  useAccount,
+  useContractRead,
+  useProvider,
+} from "wagmi";
 import { EpicGame__factory } from "@/typechain";
 import * as React from "react";
 import { BOSS_METADATA } from "../contants/Hero.metadata";
@@ -17,15 +22,17 @@ export default function Play() {
   const router = useRouter();
   const [bossGame, setBossGame] = React.useState(null);
   const account = useAccount();
+  const provider = useProvider();
   const [tokenURI, setTokenURI] = React.useState<null | TokenURI>(null);
 
   const { data: bossData } = useContractRead({
     addressOrName: contractAddress,
     contractInterface: EpicGame__factory.abi,
     functionName: "boss",
+    watch: true,
   });
 
-  const { data: nftHolders } = useContractRead({
+  const { data: nftHolders, isLoading: loadingNftHolders } = useContractRead({
     addressOrName: contractAddress,
     contractInterface: EpicGame__factory.abi,
     functionName: "nftHolders",
@@ -72,7 +79,7 @@ export default function Play() {
     };
 
     effect();
-  }, [token, loadingAttack]);
+  }, [token, loadingAttack, loadingNftHolders]);
 
   React.useEffect(() => {
     if (!bossData) {
@@ -93,7 +100,7 @@ export default function Play() {
     };
 
     effect();
-  }, [bossData, loadingAttack]);
+  }, [bossData, loadingAttack, loadingNftHolders]);
 
   React.useEffect(() => {
     if (!!tokenURI && !account?.address) {
