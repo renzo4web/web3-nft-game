@@ -92,7 +92,7 @@ export default function Play() {
           <Center>
             <Text>
               <Link
-                href={`https://goerli.etherscan.io/tx/${data?.blockHash}`}
+                href={`https://goerli.etherscan.io/tx/${data?.hash}`}
                 isExternal
               >
                 View on Etherscan
@@ -168,7 +168,7 @@ export default function Play() {
     maxHp: bossData?.['maxHp']?.toString() ?? '',
   }
 
-  const isHeroAlive = tokenUriData?.attributes?.[0]?.value > 0
+  const isHeroAlive = tokenUriData?.attributes?.[0]?.value ?? 0 > 0
 
   return (
     <Layout>
@@ -182,7 +182,7 @@ export default function Play() {
         <Divider />
         <List>
           {hitBossEventList?.length
-            ? hitBossEventList.map((e, idx) => (
+            ? hitBossEventList.map((e: any, idx) => (
                 <ListItem key={String(e?.nft + 1 * idx)}>
                   <ListIcon as={GiDrippingSword} color="green.500" />
                   <Highlight

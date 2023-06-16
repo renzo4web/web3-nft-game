@@ -1,10 +1,10 @@
 export interface TokenURI {
-  name: string
-  description: string
-  'NFT#': string
-  image: string
-  Class: string
-  attributes: Attribute[]
+  name?: string
+  description?: string
+  'NFT#'?: string
+  image?: string
+  Class?: string
+  attributes?: Attribute[]
 }
 
 export interface Attribute {
