@@ -12,8 +12,17 @@ import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 import '@fontsource-variable/inter';
 
+import {
+  EpicGame,
+  EpicGame as LOCAL_CONTRACT_ADDRESS,
+} from '../artifacts/contracts/contractAddress'
 
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || ''
+
+// chain.localhost.multicall = {
+//   address: LOCAL_CONTRACT_ADDRESS,
+//   blockCreated: 0,
+// }
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
