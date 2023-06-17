@@ -1,1 +1,1 @@
-export const EpicGame = '0xD74F2B87E2E96D2661F29407EA8d45cCd71293b8'
+export const EpicGame = '0x5FbDB2315678afecb367f032d93F642f64180aa3'

@@ -14,11 +14,33 @@ import {
   Wrap,
   WrapItem,
   useToast,
-  Image
+  Image,
+  Container,
+  Spacer,
+  Card,
+  CardBody,
 } from '@chakra-ui/react'
+import {
+  Step,
+  StepDescription,
+  StepIcon,
+  StepIndicator,
+  StepNumber,
+  StepSeparator,
+  StepStatus,
+  StepTitle,
+  Stepper,
+  useSteps,
+} from '@chakra-ui/stepper'
+import {
+  GiAbdominalArmor,
+  GiAtomicSlashes,
+  GiSwordClash,
+  GiTrophy,
+} from 'react-icons/gi'
 import { ethers, providers } from 'ethers'
 import type { NextPage } from 'next'
-import { useReducer } from 'react'
+import { useEffect, useReducer } from 'react'
 import {
   useAccount,
   useContractWrite,
@@ -38,6 +60,8 @@ import { EpicGame as YourContractType } from '../types/typechain'
 import { HEROES_METADATA } from '../constants/hero.metadata'
 import HeroSelection from '../components/HeroSelection'
 import { EpicGame__factory } from '../types/typechain/factories/contracts/EpicGames.sol'
+import { WarningTwoIcon } from '@chakra-ui/icons'
+import ConnectWalletBanner from '../components/ConnectWalletBanner'
 
 /**
  * Constants & Helpers
@@ -74,6 +98,20 @@ const initialState: StateType = {
   inputValue: '',
 }
 
+const steps = [
+  {
+    title: 'Create',
+    description: 'Create and Mint a Hero',
+    icon: GiAbdominalArmor,
+  },
+  {
+    title: 'Fight',
+    description: 'Fight to won credits',
+    icon: GiSwordClash,
+  },
+  { title: 'Win', description: 'The Winner Takes It All', icon: GiTrophy },
+]
+
 function reducer(state: StateType, action: ActionType): StateType {
   switch (action.type) {
     // Track the greeting from the blockchain
@@ -94,6 +132,10 @@ function reducer(state: StateType, action: ActionType): StateType {
 
 const Home: NextPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const { activeStep, goToNext, setActiveStep } = useSteps({
+    index: 1,
+    count: steps.length,
+  })
 
   const { isLocalChain } = useCheckLocalChain()
 
@@ -116,6 +158,17 @@ const Home: NextPage = () => {
   //   //args: [state.inputValue],
   //   //enabled: Boolean(state.inputValue),
   // })
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const nextStep = (activeStep + 1) % steps.length
+      setActiveStep(nextStep)
+    }, 3000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [activeStep, setActiveStep])
 
   const { data, write } = useContractWrite({
     address: CONTRACT_ADDRESS,
@@ -186,43 +239,52 @@ const Home: NextPage = () => {
           src="https://res.cloudinary.com/dsdziwljt/image/upload/v1686860667/2890a1fc-047d-4897-9fc6-015a21147e12_vj8ud8.jpg"
         />
       </Center>
-      <Highlight
-        query={[
-          'enchanting',
-          'heroic',
-          'Barbarian',
-          'Mage',
-          'Healer',
-          'Malvorn, the Spiked General',
-          'breathtaking',
-          'captivating',
-          'web3',
-          'adventure',
-        ]}
-        styles={{ px: '2', py: '1', bg: 'purple.100', maxW: '30ch' }}
-      >
-        Welcome to an enchanting world of heroic adventures! Dive into our web3
-        game and embark on an epic journey where you become the hero. Choose
-        from three extraordinary roles: the mighty Barbarian, the mystical Mage
-        or the compassionate Healer. Craft a unique hero by naming them and
-        selecting their role.
-      </Highlight>
+      <Container maxW={'container.md'}>
+        <Card mb={10} variant={'outline'}>
+          <CardBody>
+            <Text>
+              Welcome to an enchanting world of heroic adventures! Dive into our
+              web3 game and embark on an epic journey where you become the hero.
+              Choose from three extraordinary roles: the mighty Barbarian, the
+              mystical Mage or the compassionate Healer. Craft a unique hero by
+              naming them and selecting their role.
+            </Text>
+          </CardBody>
+        </Card>
+        <Stepper colorScheme="purple" index={activeStep}>
+          {steps.map((step, index) => (
+            <Step key={index}>
+              <StepIndicator>
+                <StepStatus
+                  complete={<StepIcon />}
+                  incomplete={<StepNumber />}
+                  active={<step.icon />}
+                />
+              </StepIndicator>
+
+              <Box flexShrink="0">
+                <StepTitle>{step.title}</StepTitle>
+                <StepDescription>{step.description}</StepDescription>
+              </Box>
+
+              <StepSeparator />
+            </Step>
+          ))}
+        </Stepper>
+      </Container>
+      {!address && <ConnectWalletBanner />}
       <Center>
         <Box maxWidth="container.xl" p="8" mt="8">
-          <Text fontSize="xl">Contract Address: {CONTRACT_ADDRESS}</Text>
-          <Divider my="8" borderColor="gray.400" />
           <Box
             display={'flex'}
             flexDirection={'column'}
             alignContent={'center'}
             justifyContent={'center'}
           >
-            <Text fontSize="lg" mb="2">
-              Hero
-            </Text>
             <Input
               bg="white"
               type="text"
+              size={'lg'}
               placeholder="Your hero's name"
               disabled={!address || isLoading}
               onChange={(e) => {
@@ -233,9 +295,10 @@ const Home: NextPage = () => {
               }}
             />
             <Wrap spacing={'10'}>
-              {HEROES_METADATA.map(({ classHero, imageURI }, i) => (
+              {HEROES_METADATA.map(({ classHero, imageURI, ...rest }, i) => (
                 <WrapItem key={imageURI}>
                   <HeroSelection
+                    {...rest}
                     src={imageURI}
                     alt={classHero}
                     onClick={async () => {

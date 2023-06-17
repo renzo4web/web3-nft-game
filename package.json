@@ -6,7 +6,8 @@
     "chain": "npx hardhat node",
     "compile": "npx hardhat compile",
     "deploy": "npx hardhat run scripts/deploy.ts --network localhost",
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "project": "tmux new-session -d -s mysession 'yarn chain'; tmux split-window -v -t mysession 'cd frontend && yarn dev'; tmux split-window -h -t mysession; tmux attach-session -t mysession"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.7.0",

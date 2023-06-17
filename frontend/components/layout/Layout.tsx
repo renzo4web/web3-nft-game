@@ -44,9 +44,9 @@ export const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
       </main>
       <footer>
         <Container mt="8" py="8" maxWidth="container.xl">
-          <Text mb="4">
-            Built by{' '}
-            <Link href="https://twitter.com/renzo4web">Renzo</Link> with ❤️
+          <Text textAlign={'center'} mb="4">
+            Built by <Link href="https://twitter.com/renzo4web">Renzo</Link>{' '}
+            with ❤️
           </Text>
         </Container>
       </footer>

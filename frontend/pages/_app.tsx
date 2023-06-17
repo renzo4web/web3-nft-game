@@ -1,8 +1,9 @@
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { ChakraProvider, color, extendTheme } from '@chakra-ui/react'
 import {
   connectorsForWallets,
   darkTheme,
   getDefaultWallets,
+  lightTheme,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
@@ -15,6 +16,8 @@ import {
   EpicGame,
   EpicGame as LOCAL_CONTRACT_ADDRESS,
 } from '../artifacts/contracts/contractAddress'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || ''
 
@@ -25,12 +28,9 @@ const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || ''
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
-    chain.mainnet,
-    chain.polygon,
-    chain.optimism,
-    chain.arbitrum,
+    chain.sepolia,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true'
-      ? [chain.goerli, chain.localhost]
+      ? [chain.goerli, chain.sepolia, chain.localhost]
       : []),
   ],
   [
@@ -42,12 +42,12 @@ const { chains, provider, webSocketProvider } = configureChains(
 )
 
 const { wallets } = getDefaultWallets({
-  appName: 'RainbowKit demo',
+  appName: 'Legends Unleashed',
   chains,
 })
 
 const demoAppInfo = {
-  appName: 'Rainbowkit Demo',
+  appName: 'Legends Unleashed',
 }
 
 const connectors = connectorsForWallets(wallets)
@@ -60,19 +60,28 @@ const wagmiClient = createClient({
 })
 const theme = extendTheme({
   fonts: {
-    body: "Inter, sans-serif", 
+    body: 'Inter, sans-serif',
+    heading: 'Inter, sans-serif',
   },
-});
-
+})
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter()
+
+  useEffect(() => {
+    router.events.on('routeChangeComplete', () => {
+      document.documentElement.classList.add('wf-active')
+    })
+  }, [])
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
         appInfo={demoAppInfo}
         chains={chains}
-        theme={darkTheme({
+        theme={lightTheme({
           borderRadius: 'small',
+          accentColor: '#B068EE',
         })}
       >
         <ChakraProvider theme={theme}>
