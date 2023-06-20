@@ -1,3 +1,5 @@
+import { TokenURI } from '../types/types'
+
 type UrlsType = {
   regular: string
 }
@@ -44,4 +46,16 @@ export const generateTokenUri = (data: DataType) => {
   }
 
   return JSON.stringify(tokenUri)
+}
+
+export function decodeTokenUri(tokenData: any) {
+  const regex = /data:application\/json;base64,(.*)/
+  const match = tokenData?.toString()?.match(regex)
+  const base64String = match?.[1]
+
+  const tokenUriData: TokenURI = !!base64String
+    ? JSON.parse(atob(base64String))
+    : null
+
+  return tokenUriData
 }

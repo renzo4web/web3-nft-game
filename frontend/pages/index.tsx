@@ -1,22 +1,15 @@
 import {
-  AbsoluteCenter,
   Box,
-  Button,
   Center,
-  Divider,
   Heading,
-  Highlight,
   Input,
   Link,
-  ListItem,
   Text,
-  UnorderedList,
   Wrap,
   WrapItem,
   useToast,
   Image,
   Container,
-  Spacer,
   Card,
   CardBody,
 } from '@chakra-ui/react'
@@ -32,36 +25,20 @@ import {
   Stepper,
   useSteps,
 } from '@chakra-ui/stepper'
-import {
-  GiAbdominalArmor,
-  GiAtomicSlashes,
-  GiSwordClash,
-  GiTrophy,
-} from 'react-icons/gi'
+import { GiAbdominalArmor, GiSwordClash, GiTrophy } from 'react-icons/gi'
 import { ethers, providers } from 'ethers'
 import type { NextPage } from 'next'
 import { useEffect, useReducer } from 'react'
-import {
-  useAccount,
-  useContractWrite,
-  usePrepareContractWrite,
-  useProvider,
-  useWaitForTransaction,
-} from 'wagmi'
-import {
-  EpicGame,
-  EpicGame as LOCAL_CONTRACT_ADDRESS,
-} from '../artifacts/contracts/contractAddress'
-import YourContract from '../artifacts/contracts/YourContract.sol/YourContract.json'
+import { useAccount, useContractWrite, useWaitForTransaction } from 'wagmi'
+import { EpicGame as LOCAL_CONTRACT_ADDRESS } from '../artifacts/contracts/contractAddress'
 import { Layout } from '../components/layout/Layout'
 import { useCheckLocalChain } from '../hooks/useCheckLocalChain'
 import { useIsMounted } from '../hooks/useIsMounted'
-import { EpicGame as YourContractType } from '../types/typechain'
 import { HEROES_METADATA } from '../constants/hero.metadata'
 import HeroSelection from '../components/HeroSelection'
 import { EpicGame__factory } from '../types/typechain/factories/contracts/EpicGames.sol'
-import { WarningTwoIcon } from '@chakra-ui/icons'
 import ConnectWalletBanner from '../components/ConnectWalletBanner'
+import { useRouter } from 'next/router'
 
 /**
  * Constants & Helpers
@@ -132,7 +109,8 @@ function reducer(state: StateType, action: ActionType): StateType {
 
 const Home: NextPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { activeStep, goToNext, setActiveStep } = useSteps({
+  const router = useRouter()
+  const { activeStep, setActiveStep } = useSteps({
     index: 1,
     count: steps.length,
   })
@@ -146,18 +124,18 @@ const Home: NextPage = () => {
     : GOERLI_CONTRACT_ADDRESS
 
   const { address } = useAccount()
-
-  const provider = useProvider()
-
   const toast = useToast()
 
-  // const { config } = usePrepareContractWrite({
-  //   address: CONTRACT_ADDRESS,
-  //   abi: EpicGame__factory.abi,
-  //   functionName: 'mintHero',
-  //   //args: [state.inputValue],
-  //   //enabled: Boolean(state.inputValue),
-  // })
+  useEffect(() => {
+    fetch(`/api/nft?address=${address}`)
+      .then(async (res) => {
+        const nftData = await res.json()
+        if (nftData['NFT#']) {
+          router.push(`/hero/${nftData['NFT#']}`)
+        }
+      })
+      .catch(console.warn)
+  }, [address, router])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -180,7 +158,6 @@ const Home: NextPage = () => {
   const { isLoading } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess(data) {
-      console.log('success data', data)
       toast({
         title: 'Transaction Successful',
         description: (
@@ -203,29 +180,10 @@ const Home: NextPage = () => {
     },
   })
 
-  // call the smart contract, read the current greeting value
-  // async function fetchContractGreeting() {
-  //   if (provider) {
-  //     const contract = new ethers.Contract(
-  //       CONTRACT_ADDRESS,
-  //       YourContract.abi,
-  //       provider
-  //     ) as YourContractType
-  //     try {
-  //       const data = await contract.greeting()
-  //       dispatch({ type: 'SET_HERO_NAME', greeting: data })
-  //     } catch (err) {
-  //       // eslint-disable-next-line no-console
-  //       console.log('Error: ', err)
-  //     }
-  //   }
-  // }
-
   if (!isMounted) {
     return null
   }
 
-  console.log({ state })
   return (
     <Layout>
       <Heading as="h1" mb="8" textAlign="center">
@@ -253,7 +211,7 @@ const Home: NextPage = () => {
         </Card>
         <Stepper colorScheme="purple" index={activeStep}>
           {steps.map((step, index) => (
-            <Step key={index}>
+            <Step key={String(index)}>
               <StepIndicator>
                 <StepStatus
                   complete={<StepIcon />}

@@ -23,15 +23,14 @@ import {
   useContractReads,
   useContractWrite,
   usePrepareContractWrite,
-  useContractEvent,
   useProvider,
 } from 'wagmi'
 import { useCheckLocalChain } from '../hooks/useCheckLocalChain'
 import { EpicGame__factory } from '../types/typechain/factories/contracts/EpicGames.sol'
 import HeroNFTCard from '../components/HeroNFTCard'
-import { TokenURI } from '../types/types'
 import { BOSS_METADATA } from '../constants/hero.metadata'
 import { useEffect, useState } from 'react'
+import { decodeTokenUri } from '../utils/generateTokenUri'
 
 const GOERLI_CONTRACT_ADDRESS = '0x3B73833638556f10ceB1b49A18a27154e3828303'
 
@@ -134,18 +133,6 @@ export default function Play() {
           )
         ).sort((a, b) => b?.timestamp - a?.timestamp) as never as any
       )
-      console.log(
-        await Promise.all(
-          logs?.map?.(async (e) => ({
-            nft: e.args.tokenId?.toString?.(),
-            bossHp: e.args.bossHp?.toString?.(),
-            heroeHp: e.args.heroeHp?.toString?.(),
-            // convert timestamp to date locale browser
-            timestamp: (await e.getBlock())?.timestamp,
-            // TODO : add time
-          }))
-        )
-      )
     })()
 
     return () => {
@@ -153,13 +140,7 @@ export default function Play() {
     }
   }, [CONTRACT_ADDRESS, provider, attackBossData])
 
-  const regex = /data:application\/json;base64,(.*)/
-  const match = tokenData?.toString()?.match(regex)
-  const base64String = match?.[1]
-
-  const tokenUriData: TokenURI = !!base64String
-    ? JSON.parse(atob(base64String))
-    : null
+  const tokenUriData = decodeTokenUri(tokenData)
 
   const boss = {
     name: bossData?.['name']?.toString() ?? '',

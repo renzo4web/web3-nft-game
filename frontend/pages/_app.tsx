@@ -58,6 +58,7 @@ const wagmiClient = createClient({
   provider,
   webSocketProvider,
 })
+
 const theme = extendTheme({
   fonts: {
     body: 'Inter, sans-serif',

@@ -33,7 +33,6 @@ export default function HeroSelection({
 }: HeroSelectionProps) {
   const IMAGE = src
 
-  console.log('account', account, 'heroName', heroName)
   return (
     <Center py={12}>
       <Box
