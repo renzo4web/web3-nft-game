@@ -44,7 +44,7 @@ export default function HeroNFTCard({
         ?.value
 
   return (
-    <Card maxW="sm">
+    <Card maxW="md">
       <CardBody>
         <Image src={image} alt={name} borderRadius="lg" />
         <Stack mt="6" spacing="3">

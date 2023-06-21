@@ -13,7 +13,6 @@ import {
   Flex,
   Divider,
 } from '@chakra-ui/react'
-import { EpicGame as LOCAL_CONTRACT_ADDRESS } from '../artifacts/contracts/contractAddress'
 import { GiDrippingSword } from 'react-icons/gi'
 import { Layout } from '../components/layout/Layout'
 import {
@@ -25,25 +24,18 @@ import {
   usePrepareContractWrite,
   useProvider,
 } from 'wagmi'
-import { useCheckLocalChain } from '../hooks/useCheckLocalChain'
 import { EpicGame__factory } from '../types/typechain/factories/contracts/EpicGames.sol'
 import HeroNFTCard from '../components/HeroNFTCard'
 import { BOSS_METADATA } from '../constants/hero.metadata'
 import { useEffect, useState } from 'react'
 import { decodeTokenUri } from '../utils/generateTokenUri'
-
-const GOERLI_CONTRACT_ADDRESS = '0x3B73833638556f10ceB1b49A18a27154e3828303'
+import { EpicGame as CONTRACT_ADDRESS } from '../artifacts/contracts/contractAddress'
 
 export default function Play() {
   const account = useAccount()
   const toast = useToast()
-  const { isLocalChain } = useCheckLocalChain()
   const provider = useProvider()
   const [hitBossEventList, setHitBossEventList] = useState([])
-
-  const CONTRACT_ADDRESS = isLocalChain
-    ? LOCAL_CONTRACT_ADDRESS
-    : GOERLI_CONTRACT_ADDRESS
 
   const epicGameContract = {
     address: CONTRACT_ADDRESS,
