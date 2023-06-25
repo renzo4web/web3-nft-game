@@ -15,6 +15,7 @@
     "@chakra-ui/stepper": "^2.2.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@fontsource/bakbak-one": "^5.0.3",
     "@fontsource/inter": "^5.0.3",
     "@rainbow-me/rainbowkit": "^0.8.0",
     "ethers": "^5.7.2",

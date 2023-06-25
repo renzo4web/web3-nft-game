@@ -62,7 +62,7 @@ const wagmiClient = createClient({
 const theme = extendTheme({
   fonts: {
     body: 'Inter, sans-serif',
-    heading: 'Inter, sans-serif',
+    heading: `'Bakbak One',Inter, sans-serif`,
   },
 })
 

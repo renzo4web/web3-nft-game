@@ -20,7 +20,7 @@ import {
   useAccount,
   useContractRead,
   useContractReads,
-  useContractWrite,
+  useContractWrite, useNetwork,
   usePrepareContractWrite,
   useProvider,
 } from 'wagmi'
@@ -30,12 +30,20 @@ import { BOSS_METADATA } from '../constants/hero.metadata'
 import { useEffect, useState } from 'react'
 import { decodeTokenUri } from '../utils/generateTokenUri'
 import { EpicGame as CONTRACT_ADDRESS } from '../artifacts/contracts/contractAddress'
+import {chain as chains} from "@wagmi/core";
+import {useCheckLocalChain} from "../hooks/useCheckLocalChain";
+import {useRouter} from "next/router";
 
 export default function Play() {
   const account = useAccount()
+  const router = useRouter()
   const toast = useToast()
   const provider = useProvider()
   const [hitBossEventList, setHitBossEventList] = useState([])
+  const {isLocalChain} = useCheckLocalChain()
+  const {chain:currentChain} = useNetwork()
+  const isRightNetwork = isLocalChain ? (currentChain?.id === chains.localhost.id) : (currentChain?.id === chains.sepolia.id)
+
 
   const epicGameContract = {
     address: CONTRACT_ADDRESS,

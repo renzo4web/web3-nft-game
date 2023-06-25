@@ -1427,6 +1427,11 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
+"@fontsource/bakbak-one@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@fontsource/bakbak-one/-/bakbak-one-5.0.3.tgz#16fd90d5ea696c3ba06738bc7406c55205ca2b47"
+  integrity sha512-kqZ9wtET5z0jG6mlHjjvTXu+biXNDpUQWgjfai0yAl5UgbX1FHtdoFyRYVvYfyvyjKTYR+MQx/fNhP15MHqA1A==
+
 "@fontsource/inter@^5.0.3":
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-5.0.3.tgz#30a1c0b974e29d72eddaec0c45655597ffa0bf80"

@@ -17,6 +17,7 @@ import HeroNFTCard from '../../components/HeroNFTCard'
 import { GiSwordBrandish } from 'react-icons/gi'
 import Link from 'next/link'
 import HitBossEventList from '../../components/HitBossEventList'
+import {useCheckIsValidChain} from "../../hooks/useCheckIsValidChain";
 
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
   const { id } = context.query
@@ -50,6 +51,7 @@ interface Props {
 }
 
 export default function HeroPage({ nftData }: Props) {
+
   return (
     <Layout>
       <Container maxW={'container.lg'}>

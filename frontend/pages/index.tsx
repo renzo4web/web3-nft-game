@@ -29,7 +29,7 @@ import { GiAbdominalArmor, GiSwordClash, GiTrophy } from 'react-icons/gi'
 import { ethers, providers } from 'ethers'
 import type { NextPage } from 'next'
 import { useEffect, useReducer } from 'react'
-import { useAccount, useContractWrite, useWaitForTransaction } from 'wagmi'
+import {useAccount, useContractWrite, useNetwork, useWaitForTransaction,chain as chains} from 'wagmi'
 import { EpicGame as LOCAL_CONTRACT_ADDRESS } from '../artifacts/contracts/contractAddress'
 import { Layout } from '../components/layout/Layout'
 import { useCheckLocalChain } from '../hooks/useCheckLocalChain'
@@ -116,17 +116,20 @@ const Home: NextPage = () => {
   })
 
   const { isLocalChain } = useCheckLocalChain()
+  const {chain} = useNetwork()
 
   const { isMounted } = useIsMounted()
 
   const CONTRACT_ADDRESS = isLocalChain
     ? LOCAL_CONTRACT_ADDRESS
     : GOERLI_CONTRACT_ADDRESS
+  const isRightNetwork = isLocalChain ? (chain?.id === chains.localhost.id) : (chain?.id === chains.sepolia.id)
 
   const { address } = useAccount()
   const toast = useToast()
 
   useEffect(() => {
+    if(!address || !isRightNetwork) return
     fetch(`/api/nft?address=${address}`)
       .then(async (res) => {
         const nftData = await res.json()
@@ -135,7 +138,7 @@ const Home: NextPage = () => {
         }
       })
       .catch(console.warn)
-  }, [address, router])
+  }, [address, router, isRightNetwork])
 
   useEffect(() => {
     const interval = setInterval(() => {
