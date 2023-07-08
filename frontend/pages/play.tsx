@@ -37,8 +37,11 @@ export default function Play() {
   const account = useAccount()
   const router = useRouter()
   const toast = useToast()
-  const provider = useProvider()
+
   const { isLocalChain } = useCheckLocalChain()
+  const provider = useProvider({
+    chainId: isLocalChain ? chain.localhost.id : chain.sepolia.id,
+  })
   const [hitBossEventList, setHitBossEventList] = useState([])
 
   const epicGameContract = {
