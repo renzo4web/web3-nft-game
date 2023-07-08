@@ -155,14 +155,14 @@ export default function Play() {
       )?.value) ??
     0 > 0
 
-  const isNotNumberZero = tokenUriData?.['NFT#'] !== '0'
-
   useEffect(() => {
-    console.log({ isHeroAlive })
+    if (!tokenUriData?.['NFT#']) return
+    const isNotNumberZero = tokenUriData?.['NFT#'] !== '0'
+
     if (!isLoadingTokenData && !isHeroAlive && isNotNumberZero) {
       router.push('/game-over')
     }
-  }, [isHeroAlive, isLoadingTokenData, router, isNotNumberZero])
+  }, [isHeroAlive, isLoadingTokenData, router, tokenUriData])
 
   if (isLoading) {
     return null

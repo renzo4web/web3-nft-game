@@ -50,12 +50,10 @@ interface Props {
 }
 
 export default function HeroPage({ nftData }: Props) {
-  console.log(nftData)
   const isHeroAlive =
     nftData?.attributes?.find((atr) => atr.trait_type === 'Health Points')
       ?.value ?? 0 > 0
 
-  console.log(isHeroAlive)
   return (
     <Layout>
       <Container maxW={'container.lg'}>
