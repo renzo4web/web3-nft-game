@@ -61,10 +61,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.EpicGame__factory>;
     getContractFactory(
-      name: "EpicGame",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.EpicGame__factory>;
-    getContractFactory(
       name: "YourContract",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.YourContract__factory>;
@@ -128,11 +124,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IERC165>;
-    getContractAt(
-      name: "EpicGame",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.EpicGame>;
     getContractAt(
       name: "EpicGame",
       address: string,

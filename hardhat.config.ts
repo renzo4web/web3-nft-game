@@ -1,8 +1,7 @@
-import '@nomicfoundation/hardhat-toolbox';
-import { HardhatUserConfig } from 'hardhat/config';
+import "@nomicfoundation/hardhat-verify";
+import { HardhatUserConfig } from "hardhat/config";
 require("dotenv").config();
-const { API_URL, PRIVATE_KEY } = process.env;
-
+const { API_URL, PRIVATE_KEY, ETHERSCAN_SEPOLIA_API_KEY } = process.env;
 
 /** @type import('hardhat/config').HardhatUserConfig */
 const config: HardhatUserConfig = {
@@ -21,6 +20,11 @@ const config: HardhatUserConfig = {
   },
   typechain: {
     outDir: "./frontend/types/typechain",
+  },
+  etherscan: {
+    apiKey: {
+      sepolia: ETHERSCAN_SEPOLIA_API_KEY || "",
+    },
   },
 };
 

@@ -42,7 +42,7 @@ import { useCheckLocalChain } from '../hooks/useCheckLocalChain'
 import { useIsMounted } from '../hooks/useIsMounted'
 import { HEROES_METADATA } from '../constants/hero.metadata'
 import HeroSelection from '../components/HeroSelection'
-import { EpicGame__factory } from '../types/typechain/factories/contracts/EpicGames.sol'
+import { EpicGame__factory } from '../types/typechain/factories/contracts'
 import ConnectWalletBanner from '../components/ConnectWalletBanner'
 import { useRouter } from 'next/router'
 
@@ -54,7 +54,7 @@ const localProvider = new providers.StaticJsonRpcProvider(
   'http://localhost:8545'
 )
 
-const GOERLI_CONTRACT_ADDRESS = '0x3B73833638556f10ceB1b49A18a27154e3828303'
+const GOERLI_CONTRACT_ADDRESS = '0xDfA1f6b8a8D5Bb9b32F4e6F73704CD1F7248621a'
 
 /**
  * Prop Types

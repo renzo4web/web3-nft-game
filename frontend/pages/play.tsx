@@ -24,7 +24,7 @@ import {
   usePrepareContractWrite,
   useProvider,
 } from 'wagmi'
-import { EpicGame__factory } from '../types/typechain/factories/contracts/EpicGames.sol'
+import { EpicGame__factory } from '../types/typechain/factories/contracts'
 import HeroNFTCard from '../components/HeroNFTCard'
 import { BOSS_METADATA } from '../constants/hero.metadata'
 import { useEffect, useState } from 'react'

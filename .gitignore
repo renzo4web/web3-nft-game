@@ -53,4 +53,5 @@ cache
 # production
 /frontend/build
 # contracts
-# /frontend/artifacts/*
+/frontend/artifacts/*
+frontend/artifacts/*
