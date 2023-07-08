@@ -31,18 +31,20 @@ import { useEffect, useState } from 'react'
 import { decodeTokenUri } from '../utils/generateTokenUri'
 import { EpicGame as CONTRACT_ADDRESS } from '../artifacts/contracts/contractAddress'
 import { useRouter } from 'next/router'
+import { useCheckLocalChain } from '../hooks/useCheckLocalChain'
 
 export default function Play() {
   const account = useAccount()
   const router = useRouter()
   const toast = useToast()
   const provider = useProvider()
+  const { isLocalChain } = useCheckLocalChain()
   const [hitBossEventList, setHitBossEventList] = useState([])
 
   const epicGameContract = {
     address: CONTRACT_ADDRESS,
     abi: EpicGame__factory.abi,
-    chainId: chain.localhost.id, // TODO: change to chain.goerli.id
+    chainId: isLocalChain ? chain.localhost.id : chain.sepolia.id,
   }
 
   const { data, isLoading, error } = useContractReads({
