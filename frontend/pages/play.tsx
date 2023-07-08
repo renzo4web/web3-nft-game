@@ -74,10 +74,6 @@ export default function Play() {
       !!holderNftData && !isNaN(holderNftNumber) && Number(holderNftData) > 0,
   })
 
-  console.log({
-    a: holderNftData,
-  })
-
   const { config } = usePrepareContractWrite({
     ...epicGameContract,
     functionName: 'attackBoss', // TODO: move to constant
@@ -159,7 +155,7 @@ export default function Play() {
       )?.value) ??
     0 > 0
 
-  const isNotNumberZero = tokenUriData['NFT#'] !== '0'
+  const isNotNumberZero = tokenUriData?.['NFT#'] !== '0'
 
   useEffect(() => {
     console.log({ isHeroAlive })
