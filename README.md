@@ -1,50 +1,27 @@
-# Advanced Sample Hardhat Project
+# NFT Game
+
+This project is a blockchain-based gaming application that allows users to create, mint, and battle with unique heroes represented as NFTs. This repository contains the code for the frontend of the application, built using React, Next.js, and Chakra UI.
+
+I made this game to understand a little more about solidity, blockchain, contracts and how they interact with a frontend.
+
+### Technologies Used
+- *Hardhat*: Hardhat is a development environment and testing framework for Ethereum smart contracts. It is used in this project to compile, deploy, and interact with the smart contracts that power the NFT functionality.
+
+- *Next.js*: Next.js is a framework for building server-side rendered and statically generated React applications. It offers features like server-side rendering, automatic code splitting, and efficient caching for improved performance.
+- *Chakra UI*: Chakra UI is a simple and modular UI component library for React. It provides a set of accessible and customizable components that can be easily integrated into the application, allowing for rapid development and consistent design.
+
+### Getting Started
+To get started with the Project Name frontend, follow these steps:
+
+- Clone the repository: git clone <repository-url>
+- Install the dependencies: yarn install
+- Set up the required environment variables (if any).
+- Start the development server: yarn dev
+- Open your browser and navigate to http://localhost:3000 to access the application.
 
 
-[![hardhat-mocha CI](https://github.com/renzo4web/Grande-Jogo/actions/workflows/main.yml/badge.svg)](https://github.com/renzo4web/Grande-Jogo/actions/workflows/main.yml)
+### Contributing
+We welcome contributions to the Project Name project. If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request. We appreciate your feedback and contributions!
 
-
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
-
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run scripts/deploy.ts
-TS_NODE_FILES=true npx ts-node scripts/deploy.ts
-npx eslint '**/*.{js,ts}'
-npx eslint '**/*.{js,ts}' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
-```
-
-# Etherscan verification
-
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
-
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
-
-```shell
-hardhat run --network ropsten scripts/deploy.ts
-```
-
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
-
-```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
-```
-
-# Performance optimizations
-
-For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
+### License
+The Project Name is open-source software licensed under the MIT License. Feel free to use, modify, and distribute the code as per the terms of the license.

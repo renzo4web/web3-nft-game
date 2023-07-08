@@ -1,4 +1,12 @@
-import { ethers } from "hardhat";
+// We require the Hardhat Runtime Environment explicitly here. This is optional
+// but useful for running the script in a standalone fashion through `node <script>`.
+//
+// When running the script with `hardhat run <script>` you'll find the Hardhat
+// Runtime Environment's members available in the global scope.
+import fs from 'fs';
+import { config, ethers, } from 'hardhat';
+import { HardhatRuntimeEnvironment } from "hardhat/types";
+
 
 export enum Class {
   Mage,
@@ -40,29 +48,46 @@ export const BOSS_ATTR = {
   name: "The Boss",
 };
 
-async function main() {
-  const EpicGame = await ethers.getContractFactory("EpicGame");
-  const game = await EpicGame.deploy(BASE_HEROES, BOSS_ATTR);
+async function main(hre: HardhatRuntimeEnvironment) {
+  // Hardhat always runs the compile task when running scripts with its command
+  // line interface.
+  //
+  // If this script is run directly using `node` you may want to call compile
+  // manually to make sure everything is compiled
+  // await hre.run('compile');
 
-  await game.deployed();
+  // fs.unlinkSync(`${config.paths.artifacts}/contracts/contractAddress.ts`);
 
-  /*
-  let txn;
-  // We only have three characters.
-  // an NFT w/ the character at index 2 of our array.
-  txn = await game.mintHero(Class.Barbarian, "eeeeel", "http:2//", {
-    value: ethers.utils.parseEther("0.1"),
-  });
-  await txn.wait();
 
-  const returnedTokenUri = await game.tokenURI(1);
-  console.log("Token URI:", returnedTokenUri);
-  */
+  // We get the contract to deploy
+  const EpicGamesContract = await ethers.getContractFactory('EpicGame');
+  const contract = await EpicGamesContract.deploy(BASE_HEROES, BOSS_ATTR);
+  await contract.deployed();
+  console.log('EpicGames deployed to:', contract.address);
 
-  console.log("Greeter deployed to:", game.address);
+
+  saveFrontendFiles(
+    contract.address,
+    'EpicGame',
+  );
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+// https://github.com/nomiclabs/hardhat-hackathon-boilerplate/blob/master/scripts/deploy.js
+function saveFrontendFiles(
+  contractAddress: string,
+  contractName: string,
+) {
+  fs.writeFileSync(
+    `${config.paths.artifacts}/contracts/contractAddress.ts`,
+    `export const ${contractName} = '${contractAddress}'\n`
+  );
+}
+
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
