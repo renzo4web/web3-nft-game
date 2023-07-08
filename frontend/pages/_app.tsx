@@ -24,9 +24,10 @@ const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || ''
 const { chains, provider, webSocketProvider } = configureChains(
   [
     chain.sepolia,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true'
-      ? [chain.sepolia, chain.goerli, chain.localhost]
-      : []),
+    // DEV mode add chain.localhost
+    // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true'
+    //   ? [chain.sepolia, chain.goerli]
+    //   : []),
   ],
   [
     alchemyProvider({
