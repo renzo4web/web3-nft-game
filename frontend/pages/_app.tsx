@@ -25,7 +25,7 @@ const { chains, provider, webSocketProvider } = configureChains(
   [
     chain.sepolia,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true'
-      ? [chain.goerli, chain.sepolia, chain.localhost]
+      ? [chain.sepolia, chain.goerli, chain.localhost]
       : []),
   ],
   [

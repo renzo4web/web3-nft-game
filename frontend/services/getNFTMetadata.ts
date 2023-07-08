@@ -4,11 +4,14 @@ import { EpicGame as LOCAL_CONTRACT_ADDRESS } from '../artifacts/contracts/contr
 import { decodeTokenUri } from '../utils/generateTokenUri'
 
 export function getContract() {
-  const isLocal = process.env.NODE_ENV === 'development'
+  const isLocal = process?.env?.NODE_ENV === 'development'
 
-  const providerUrl = isLocal
-    ? 'http://localhost:8545'
-    : process.env.ALCHEMY_API_URL
+  // const providerUrl = isLocal
+  //   ? 'http://localhost:8545'
+  //   : process.env.ALCHEMY_API_URL
+
+  //
+  const providerUrl = process.env.ALCHEMY_API_URL
 
   const provider = new ethers.providers.JsonRpcProvider(providerUrl)
 
