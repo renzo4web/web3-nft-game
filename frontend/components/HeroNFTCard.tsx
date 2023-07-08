@@ -58,7 +58,11 @@ export default function HeroNFTCard({
             Health : {currentHealth} / 100
           </Text>
           <Stack spacing={5}>
-            <Progress colorScheme="green" height="32px" value={currentHealth} />
+            <Progress
+              colorScheme={currentHealth < 20 ? 'red' : 'green'}
+              height="32px"
+              value={currentHealth}
+            />
           </Stack>
         </Stack>
       </CardBody>

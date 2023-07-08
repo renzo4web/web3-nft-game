@@ -1,59 +1,27 @@
-# nextjs-ethereum-starter
+# NFT Game
 
-This project was sponsored by the [BuidlGuidl](https://buidlguidl.com). Please support the BuidlGuidl if this project has been helpful!
+This project is a blockchain-based gaming application that allows users to create, mint, and battle with unique heroes represented as NFTs. This repository contains the code for the frontend of the application, built using React, Next.js, and Chakra UI.
 
----
+I made this game to understand a little more about solidity, blockchain, contracts and how they interact with a frontend.
 
-My iteration of [Austin Griffith's scaffold-eth](https://github.com/austintgriffith/scaffold-eth).
-Also inspired by [Nader Dabit's blog post](https://dev.to/dabit3/the-complete-guide-to-full-stack-ethereum-development-3j13)
+### Technologies Used
+- *Hardhat*: Hardhat is a development environment and testing framework for Ethereum smart contracts. It is used in this project to compile, deploy, and interact with the smart contracts that power the NFT functionality.
 
-- [Hardhat](https://hardhat.org/)
-- [Next.js](https://nextjs.org/)
-- [RainbowKit](https://www.rainbowkit.com/)
-- [wagmi](https://wagmi.sh/)
-- [Chakra UI](https://chakra-ui.com/)
+- *Next.js*: Next.js is a framework for building server-side rendered and statically generated React applications. It offers features like server-side rendering, automatic code splitting, and efficient caching for improved performance.
+- *Chakra UI*: Chakra UI is a simple and modular UI component library for React. It provides a set of accessible and customizable components that can be easily integrated into the application, allowing for rapid development and consistent design.
 
-👀 [View the Live Demo](https://nextjs-ethereum-starter.vercel.app/)
+### Getting Started
+To get started with the Project Name frontend, follow these steps:
 
-## Getting Started
+- Clone the repository: git clone <repository-url>
+- Install the dependencies: yarn install
+- Set up the required environment variables (if any).
+- Start the development server: yarn dev
+- Open your browser and navigate to http://localhost:3000 to access the application.
 
-It is recommended to use Yarn to avoid dependency collisions: [Yarn](https://classic.yarnpkg.com/en/docs/install)
 
-```bash
-git clone https://github.com/ChangoMan/nextjs-ethereum-starter.git
-cd nextjs-ethereum-starter
+### Contributing
+We welcome contributions to the Project Name project. If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request. We appreciate your feedback and contributions!
 
-yarn install
-
-# Start up the Hardhat Network
-yarn chain
-```
-
-Here we just install the npm project's dependencies, and by running `yarn chain` we spin up an instance of Hardhat Network that you can connect to using MetaMask. In a different terminal in the same directory, run:
-
-```bash
-yarn deploy
-```
-
-This will deploy the contract to Hardhat Network. After this completes run:
-
-```bash
-cd frontend
-yarn install
-```
-
-This will install the frontend packages. We also need to set up the local configuration file.
-
-```bash
-cp .env.local.example .env.local
-```
-
-This will create a file called `.env.local`. Open up that file and fill in the `NEXT_PUBLIC_ALCHEMY_API_KEY=` and `NEXT_PUBLIC_UNSPLASH_ACCESS_KEY=` environment variables.
-
-```bash
-yarn dev
-```
-
-This will start up the Next.js development server. Your site will be available at http://localhost:3000/
-
-To interact with the local contract, be sure to switch your MetaMask Network to `Localhost 8545`
+### License
+The Project Name is open-source software licensed under the MIT License. Feel free to use, modify, and distribute the code as per the terms of the license.

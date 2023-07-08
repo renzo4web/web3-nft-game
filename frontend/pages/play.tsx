@@ -20,7 +20,7 @@ import {
   useAccount,
   useContractRead,
   useContractReads,
-  useContractWrite, useNetwork,
+  useContractWrite,
   usePrepareContractWrite,
   useProvider,
 } from 'wagmi'
@@ -30,9 +30,7 @@ import { BOSS_METADATA } from '../constants/hero.metadata'
 import { useEffect, useState } from 'react'
 import { decodeTokenUri } from '../utils/generateTokenUri'
 import { EpicGame as CONTRACT_ADDRESS } from '../artifacts/contracts/contractAddress'
-import {chain as chains} from "@wagmi/core";
-import {useCheckLocalChain} from "../hooks/useCheckLocalChain";
-import {useRouter} from "next/router";
+import { useRouter } from 'next/router'
 
 export default function Play() {
   const account = useAccount()
@@ -40,10 +38,6 @@ export default function Play() {
   const toast = useToast()
   const provider = useProvider()
   const [hitBossEventList, setHitBossEventList] = useState([])
-  const {isLocalChain} = useCheckLocalChain()
-  const {chain:currentChain} = useNetwork()
-  const isRightNetwork = isLocalChain ? (currentChain?.id === chains.localhost.id) : (currentChain?.id === chains.sepolia.id)
-
 
   const epicGameContract = {
     address: CONTRACT_ADDRESS,
@@ -65,14 +59,23 @@ export default function Play() {
     ],
     watch: true,
     enabled: !!account,
+    cacheOnBlock: true,
   })
   const [bossData, holderNftData] = data ?? [{} as any]
 
-  const { data: tokenData } = useContractRead({
+  const holderNftNumber = Number(holderNftData?.toString?.() ?? 0)
+
+  const { data: tokenData, isLoading: isLoadingTokenData } = useContractRead({
     ...epicGameContract,
     functionName: 'tokenURI', // TODO: move to constant
-    args: [Number(holderNftData?.toString?.() ?? 0)],
-    enabled: !!holderNftData,
+    args: [holderNftNumber],
+    // nft serie starts at 1
+    enabled:
+      !!holderNftData && !isNaN(holderNftNumber) && Number(holderNftData) > 0,
+  })
+
+  console.log({
+    a: holderNftData,
   })
 
   const { config } = usePrepareContractWrite({
@@ -149,7 +152,25 @@ export default function Play() {
     maxHp: bossData?.['maxHp']?.toString() ?? '',
   }
 
-  const isHeroAlive = tokenUriData?.attributes?.[0]?.value ?? 0 > 0
+  const isHeroAlive =
+    (!!tokenUriData &&
+      tokenUriData?.attributes?.find(
+        (atr) => atr.trait_type === 'Health Points'
+      )?.value) ??
+    0 > 0
+
+  const isNotNumberZero = tokenUriData['NFT#'] !== '0'
+
+  useEffect(() => {
+    console.log({ isHeroAlive })
+    if (!isLoadingTokenData && !isHeroAlive && isNotNumberZero) {
+      router.push('/game-over')
+    }
+  }, [isHeroAlive, isLoadingTokenData, router, isNotNumberZero])
+
+  if (isLoading) {
+    return null
+  }
 
   return (
     <Layout>

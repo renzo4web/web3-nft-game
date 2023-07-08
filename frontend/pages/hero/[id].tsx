@@ -17,7 +17,6 @@ import HeroNFTCard from '../../components/HeroNFTCard'
 import { GiSwordBrandish } from 'react-icons/gi'
 import Link from 'next/link'
 import HitBossEventList from '../../components/HitBossEventList'
-import {useCheckIsValidChain} from "../../hooks/useCheckIsValidChain";
 
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
   const { id } = context.query
@@ -51,7 +50,12 @@ interface Props {
 }
 
 export default function HeroPage({ nftData }: Props) {
+  console.log(nftData)
+  const isHeroAlive =
+    nftData?.attributes?.find((atr) => atr.trait_type === 'Health Points')
+      ?.value ?? 0 > 0
 
+  console.log(isHeroAlive)
   return (
     <Layout>
       <Container maxW={'container.lg'}>
@@ -66,14 +70,15 @@ export default function HeroPage({ nftData }: Props) {
               <Heading>{nftData.name}</Heading>
               <HeroNFTCard {...nftData} />
               <Button
-                as={Link}
+                as={isHeroAlive ? Link : undefined}
                 href={'/play'}
                 mt={5}
                 size={'lg'}
-                width={{ md: '100%' }}
+                width={{ md: '95%' }}
                 leftIcon={<GiSwordBrandish />}
                 colorScheme="purple"
                 variant="solid"
+                isDisabled={!isHeroAlive}
               >
                 Battle
               </Button>
