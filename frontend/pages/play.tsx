@@ -59,7 +59,7 @@ export default function Play() {
     ],
     watch: true,
     enabled: !!account,
-    cacheOnBlock: true,
+    // cacheOnBlock: true, // Dont work on sopolia testnet
   })
   const [bossData, holderNftData] = data ?? [{} as any]
 
