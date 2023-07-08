@@ -11,11 +11,6 @@ import type { AppProps } from 'next/app'
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
-
-import {
-  EpicGame,
-  EpicGame as LOCAL_CONTRACT_ADDRESS,
-} from '../artifacts/contracts/contractAddress'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
