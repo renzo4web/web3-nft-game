@@ -21,7 +21,7 @@ To get started with the Project Name frontend, follow these steps:
 
 
 ### Contributing
-We welcome contributions to the Project Name project. If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request. We appreciate your feedback and contributions!
+If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request. We appreciate your feedback and contributions!
 
 ### License
 The Project Name is open-source software licensed under the MIT License. Feel free to use, modify, and distribute the code as per the terms of the license.
